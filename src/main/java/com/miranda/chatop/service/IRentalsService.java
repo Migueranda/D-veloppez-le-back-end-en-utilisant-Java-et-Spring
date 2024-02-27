@@ -6,9 +6,9 @@ import com.miranda.chatop.model.entity.UserEntity;
 
 import java.util.List;
 
-public interface IRentalsService {
+public interface IRentalsService {// l'inversion de contrôle (IoC) :permet de changer facilement l'implémentation du service sans changer le code client.
      List<RentalsDto> getRentals();
-     RentalsEntity getRentalsEntity(final Long id);
-     void deleteRentalsEntity(final Long id);
-     RentalsEntity saveRentalsEntity(RentalsEntity rentalsEntity);
+     RentalsDto getRentalsEntity(final Long id);
+     RentalsDto deleteRentalsEntity(final Long id);
+     RentalsDto saveRentalsEntity(RentalsDto rentalsDto);
 }

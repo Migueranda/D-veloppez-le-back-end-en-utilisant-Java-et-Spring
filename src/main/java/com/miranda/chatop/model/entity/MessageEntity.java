@@ -1,27 +1,36 @@
 package com.miranda.chatop.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.miranda.chatop.model.dto.MessageDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.sql.Timestamp;
+import java.util.Date;
+
 @Entity
 @Data
 @Table(name = "messages")
 public class MessageEntity {
+  public  MessageEntity (MessageDto messageDto){
+      Date date = new Date();
 
-    //private Integer id;
-    @Setter
-    @Getter
+      this.setId(messageDto.getId());
+      this.setRental_id(messageDto.getRental_id());
+      this.setUser_id(messageDto.getUser_id());
+      this.setMessage(messageDto.getMessage());
+      this.setCreated_at(new Timestamp(date.getTime()));
+      this.setUpdated_at(new Timestamp(date.getTime()));
+    }
+
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "RENTAL_ID")
-    private Integer rental;
+    private Integer rental_id;
 
     @Column(name = "USER_ID")
     private Integer user_id;

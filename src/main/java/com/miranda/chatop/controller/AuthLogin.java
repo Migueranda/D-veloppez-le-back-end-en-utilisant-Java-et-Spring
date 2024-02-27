@@ -1,5 +1,6 @@
 package com.miranda.chatop.controller;
 
+import com.miranda.chatop.model.dto.UserDto;
 import com.miranda.chatop.model.entity.UserEntity;
 import com.miranda.chatop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class AuthLogin {
     private UserService userService;
 
     @PostMapping("/auth/login")
-    public UserEntity postLoginUser(@RequestBody UserEntity userEntity) {
+    public UserDto  postLoginUser(@RequestBody UserEntity userEntity) {
         return userService.saveLoginUser(userEntity);
     }
 

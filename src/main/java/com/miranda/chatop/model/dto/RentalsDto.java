@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 public class RentalsDto {
     private Long id;
     private String name;
+    private Integer surface;
     private Integer price;
     private String picture;
     private String description;
@@ -23,6 +24,7 @@ public class RentalsDto {
         RentalsDto rentalsDto = new RentalsDto();
         rentalsDto.setId(rentalsEntity.getId());
         rentalsDto.setName(rentalsEntity.getName());
+        rentalsDto.setSurface(rentalsEntity.getSurface());
         rentalsDto.setPrice(rentalsEntity.getPrice());
         rentalsDto.setPicture(rentalsEntity.getPicture());
         rentalsDto.setDescription(rentalsEntity.getDescription());

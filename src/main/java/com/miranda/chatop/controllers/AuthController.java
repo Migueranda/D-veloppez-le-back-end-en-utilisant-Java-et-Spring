@@ -21,25 +21,27 @@ public class AuthController {
     private final UserService userService;
     private final UserAuthProvider userAuthProvider;
 
+    //Cette méthode permet la connecxion d'un utilisateur puis les t
+    // renvoie les detaille de l'utlisateur et un token
     @PostMapping("auth/login")
     public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto) {
-       // System.out.println("Received login request for email: " + credentialsDto.email());
         UserDto user = userService.login(credentialsDto);
-
         user.setToken(userAuthProvider.createToken(user));
         return ResponseEntity.ok(user);
     }
 
+    //cette méthode recupère des informations sur l'utilisateur connecté
     @GetMapping("auth/me")
     public ResponseEntity<UserDto> getCurrentUser(){
         UserDto currentUser = userService.getCurrentUser();
-
         return ResponseEntity.ok(currentUser);
     }
+
+    //cette methode gère l'enregistrement d'un nouvel utilisateur
+    // puis renvoie les detailles de cet nouvel utilisateur crée ainsi qu'un token
     @PostMapping("auth/register")
     public ResponseEntity<UserDto> register(@RequestBody SignUpDto signUpDto) {
         UserDto user = userService.register(signUpDto);
-
         user.setToken(userAuthProvider.createToken(user));
         return ResponseEntity.created(URI.create("/user/" + user.getId())).body(user);
     }

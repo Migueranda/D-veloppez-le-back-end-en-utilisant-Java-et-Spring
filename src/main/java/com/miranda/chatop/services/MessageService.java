@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageService implements IMessageService {
     private final MessageRepository messageRepository;
+
+    //cette méthode sauvegarde un nouveau message dans la base de données
     @Override
     public MessageDto saveMessageEntity(MessageDto messageDto){
         MessageEntity saveMessageEntity = messageRepository.save(new MessageEntity(messageDto));

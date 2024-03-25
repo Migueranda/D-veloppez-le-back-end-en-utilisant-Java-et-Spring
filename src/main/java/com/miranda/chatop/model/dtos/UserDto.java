@@ -27,6 +27,7 @@ public class UserDto {
         userDto.setToken(userEntity.getToken());
         userDto.setCreated_at(userEntity.getCreated_at());
         userDto.setUpdated_at(userEntity.getUpdated_at());
+
         return userDto;
     }
 

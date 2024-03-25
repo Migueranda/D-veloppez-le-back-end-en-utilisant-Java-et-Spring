@@ -26,6 +26,7 @@ public class UserAuthProvider {
 
     @PostConstruct
     protected void init(){
+        //convertion de la secretKey en une chaîne de caractères Base64.
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
     public String createToken(UserDto userDto){
@@ -40,25 +41,25 @@ public class UserAuthProvider {
                 .withClaim("name", userDto.getName())
                 .sign(Algorithm.HMAC256(secretKey));
 
-        System.out.println("Create_1 Token: Decoded secretKey: " + secretKey);
-        System.out.println("Create _2 Token: Decoded secretKey: " + token);
-
         return token;
     }
 
+    //Cette methode prend en entrée un token JWT
+    // gère la validation du token
+    // extrait les information de l'utilisateur qui utilise pour créer un objet 'Authentication'
     public Authentication validateToken(String token){
 
-    Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
-        JWTVerifier verifier = JWT.require(algorithm).build();
+            JWTVerifier verifier = JWT.require(algorithm).build();
 
-        DecodedJWT decoded = verifier.verify(token);
+            DecodedJWT decoded = verifier.verify(token);
 
-        UserDto userDto = UserDto.builder()
-                .id(decoded.getClaim("id").asInt())
-                .email(decoded.getIssuer())
-                .name(decoded.getClaim("name").asString())
-                .build();
+            UserDto userDto = UserDto.builder()
+                    .id(decoded.getClaim("id").asInt())
+                    .email(decoded.getIssuer())
+                    .name(decoded.getClaim("name").asString())
+                    .build();
 
         return new UsernamePasswordAuthenticationToken(userDto, null, Collections.emptyList());
 

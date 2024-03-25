@@ -7,6 +7,7 @@ import com.miranda.chatop.repositories.RentalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -26,11 +27,14 @@ public class RentalsService implements IRentalsService {
     private final RentalRepository rentalRepository;
     private final String Folder_PATH = "C:\\dev\\Projet3\\chatop\\uploads\\";
 
+
     @Autowired
     public RentalsService(RentalRepository rentalRepository) {
         this.rentalRepository = rentalRepository;
     }
 
+
+    //Cette méthode récupère les detail d'une location en fonction de son id
     @Override
     public RentalsDto getRentalsEntity(final Long id) {
         RentalsEntity rentalsEntity = rentalRepository.findById(id).orElse(null);
@@ -40,6 +44,7 @@ public class RentalsService implements IRentalsService {
         return RentalsDto.convertToDto(rentalsEntity);
     }
 
+    //Cette méthode récupère toutes les locations disponibles dans la base de données
     @Override
     public List<RentalsDto> getRentals() {//Récupération de la liste de toutes les locations disponibles.
         Iterable<RentalsEntity> rentalsEntities = rentalRepository.findAll();
@@ -66,6 +71,7 @@ public class RentalsService implements IRentalsService {
         }
     }
 
+    //cette méthode gère la sauvegarde d'une nouvelle location dans la base de données
   @Override
   public RentalsDto upDateRentals(RentalsDto rentalsDto){
       Date date = new Date();
@@ -86,10 +92,10 @@ public class RentalsService implements IRentalsService {
       // Convertir et retourner le DTO de l'entité mise à jour
       return RentalsDto.convertToDto(updatedEntity);
   }
-@Override
+
+  //Cette methode est utilisé pour récupérer les données binaire d'une image dans le repertoire
+  @Override
   public byte[] downloadImageFromFileSystem(String picture) throws IOException {
-        // RentalsEntity fileData = rentalRepository.findByName(name);
-        // String filePath = fileData.getFilePath();
 
         String filePath = Folder_PATH + picture;
         byte[] image = Files.readAllBytes(new File(filePath).toPath());

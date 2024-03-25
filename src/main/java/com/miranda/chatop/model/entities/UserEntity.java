@@ -50,6 +50,7 @@ public class UserEntity  {
     @Column(name = "PASSWORD")
     private String password;
 
+    @Transient
     private String token;
 
     @Column(name = "CREATED_AT")

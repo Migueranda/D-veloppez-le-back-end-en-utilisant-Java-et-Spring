@@ -19,6 +19,8 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 @EnableWebSecurity
 public class SecurityConfig {
     private final UserAuthProvider userAuthProvider;
+
+    //cette configuration Spring Security définit les règles de sécurité pour l'application.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -28,13 +30,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) ->
                         requests
                                 .requestMatchers(HttpMethod.POST, "/auth/login","/auth/register", "/fileSystem").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html","/rentals/*", "/user/*","/fileSystem/*").permitAll()
-                                .requestMatchers(HttpMethod.PUT, "/rentals/*").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html","/fileSystem/*").permitAll()
+                                //.requestMatchers(HttpMethod.PUT, "/rentals/*").permitAll()
                                 .anyRequest().authenticated()
 
                 );
         return  http.build();
     }
+
+    //le pare-feu HTTP strict pour contrôler les URL autorisées.
     @Bean
     public HttpFirewall strictHttpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();

@@ -1,1 +1,0 @@
-package com.miranda.chatop.configuration;

@@ -3,6 +3,7 @@ package com.miranda.chatop.controllers;
 import com.miranda.chatop.model.dtos.MessageDto;
 import com.miranda.chatop.model.dtos.UserDto;
 import com.miranda.chatop.services.IMessageService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
     @Autowired
     private IMessageService messageService;
-
+    @Operation(description = "cette méthode permet à un utilisateur authentifié de créer un nouveau message")
     //cette méthode permet à un utilisateur authentifié de créer un nouveau message
     @PostMapping("/messages")
     public MessageDto postMessageEntity(@RequestBody MessageDto messageDto) {

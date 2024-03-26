@@ -22,9 +22,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "rentals")
+
 public class RentalsEntity { // réprensente une entité dans ma base de données.
-
-
     public  RentalsEntity (RentalsDto rentalsDto){
         Date date = new Date();
         this.setId(rentalsDto.getId());
@@ -37,14 +36,6 @@ public class RentalsEntity { // réprensente une entité dans ma base de donnée
         this.setCreated_at(new Timestamp(date.getTime()));
         this.setUpdated_at(new Timestamp(date.getTime()));
     }
-   /* public RentalsEntity(String name, Integer surface, Integer price, String picture, String description, Integer owner_id) {
-        this.name = name;
-        this.surface = surface;
-        this.price = price;
-        this.picture = picture;
-        this.description = description;
-        this.owner_id = owner_id;
-    }*/
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

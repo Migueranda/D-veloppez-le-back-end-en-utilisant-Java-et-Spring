@@ -5,6 +5,7 @@ import com.miranda.chatop.model.dtos.UserDto;
 import com.miranda.chatop.services.IRentalsService;
 import com.miranda.chatop.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
@@ -34,27 +35,25 @@ public class RentalsController {// exposition des endpoints pour gérer les opé
     private IRentalsService rentalsService;
     @Value("${file.upload.dir}")
     private String uploadDir;
-
+    @Operation(description = "Récupération de la liste de toutes les location disponibles")
     @GetMapping("/rentals")//Récupération de la liste de toutes les location disponibles.
     public Map<String, List<RentalsDto>> getRentals(){
         return Map.of("rentals", rentalsService.getRentals());
     }
 
+    @Operation(description = "Récuperation d'une location spécifique en fonction de son identifiant")
     @GetMapping("/rentals/{id}")//Récuperation d'une location spécifique en fonction de son identifiant
     public  RentalsDto getRentalsById(@PathVariable Long id){
         return rentalsService.getRentalsEntity(id);
     }
 
-
+    @Operation(description = "Cette méthode permet de céer de nouvelles locations")
     //Cette méthode permet de céer de nouvelles locations
     @PostMapping(value = "/rentals", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RentalsDto postRentalsEntity(@RequestParam("picture") MultipartFile file, @RequestParam("name") String name, @RequestParam("surface") Integer surface, @RequestParam("price") Integer price, @RequestParam("description") String description) throws IOException {
 
-        // Upload
-       // String uploadDir = "C:\\dev\\Projet3\\chatop\\uploads\\";
-        String originalFilename = file.getOriginalFilename();
-       // String fileName = System.currentTimeMillis() + "_" + originalFilename;
-        File destFile = new File(uploadDir + File.separator + originalFilename );
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        File destFile = new File(uploadDir + File.separator + fileName );
         file.transferTo(destFile);
 
         // récupération de l'Id de l'utilisateur authentifié pour set le owner_id
@@ -66,12 +65,13 @@ public class RentalsController {// exposition des endpoints pour gérer les opé
         rentalsDto.setSurface(surface);
         rentalsDto.setPrice(price);
         rentalsDto.setDescription(description);
-        rentalsDto.setPicture(originalFilename);
+        rentalsDto.setPicture(fileName);
         rentalsDto.setOwner_id(userDto.getId());
 
         return rentalsService.saveRentalsEntity(rentalsDto);
     }
 
+    @Operation(description = "Cette méthode permet de mettre à jours une location existante")
     //Cette méthode permet de mettre à jours une location existante
     @PutMapping("/rentals/{id}")// Mise à jour une location existante
     public RentalsDto putRentalsById(@RequestParam("name") String name, @RequestParam("surface") Integer surface, @RequestParam("price") Integer price, @RequestParam("description") String description, @PathVariable Long id) throws IOException {
@@ -84,11 +84,10 @@ public class RentalsController {// exposition des endpoints pour gérer les opé
 
         return  rentalsService.upDateRentals(rentalsDto);
     }
-
+    @Operation(description = "cette méthode permet de télécharger une image")
     //cette méthode permet de télécharger une image
     @GetMapping("/fileSystem/{picture}")
     public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable String picture) throws IOException{
-        System.out.println("Nom de fichier reçu dans la méthode downloadImageFromFileSystem : " + picture);
 
         byte[]  imageData = rentalsService.downloadImageFromFileSystem(picture);
         return ResponseEntity.status(HttpStatus.OK)
